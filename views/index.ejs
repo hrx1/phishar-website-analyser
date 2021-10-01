@@ -1,0 +1,105 @@
+<html>
+
+    <head>
+        <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+        th {
+            background-color:lavender;
+        }
+        </style>
+
+        <title>Website analyser</title>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        
+        <script>
+            window.onunload = function() { debugger; }
+
+            function sleep (time) {
+                console.log("AAAAAAAAAAAAAAAA")
+                return new Promise((resolve) => setTimeout(resolve, time));
+            }
+
+
+            function lock_form(lock) {
+                console.log("lock?" + lock)
+                if(lock) {
+                    console.log("DA")
+                    $("#send_url_button").text("Wait..."); //TODO ovo bi moglo bolje od ifelsa
+                    $("#send_url_button").prop("disabled", true);
+                    $("#send_url_text").prop("readonly", true)
+                    $("#send_url_text").css("background-color", 'gray')
+                } else {
+                    console.log("NE")
+                    $("#send_url_button").text("Analyze");
+                    $("#send_url_button").prop("disabled", false);
+                    $("#send_url_text").prop("readonly", false)
+                    $("#send_url_text").css("background-color", 'white')
+
+                }
+            }
+
+            function show_result(r) {
+                $('#result_area').prop('hidden', false)
+            }
+
+            function api_analyze_website(e) {
+                e.preventDefault();
+                console.log("Saljes...")
+                lock_form(true);
+                $.ajax(
+                        {
+                            url: "api/webinfo",
+                            dataType: "json",
+                            data: jQuery.param({'url': $("#send_url_text").val()}),
+                            type: 'GET',
+                            success: function(data) {
+                                console.log(data);
+                                lock_form(false);
+                                show_result(null);
+                            }
+                        }
+                );
+            }
+
+            $(document).ready(function() {
+                $('#send_url_button').click(api_analyze_website);
+            })
+
+
+        </script>
+
+    </head>
+        
+    <body>
+        <h1>Website analyser</h1>
+
+        <form>
+            <label>Website URL: </label>
+            <input id="send_url_text" type="text" id="url_text"/>
+            <br>
+            <br>
+            <button id="send_url_button" type="button">Analyse</button>
+        </form>
+
+        <hr>
+
+        <div id="result_area" hidden=true>
+        <p>Result:</p>
+
+        <table>
+
+            <tr>
+                <th>Info</th>
+                <th>Value</th>
+            </tr>
+
+        </table>
+        </div>
+    </body>
+</html>
