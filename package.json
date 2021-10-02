@@ -2,6 +2,9 @@
   "name": "phishar",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "14.13.0"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -14,7 +17,7 @@
     "got": "^11.8.2",
     "http-errors": "~1.6.3",
     "jsdom": "^17.0.0",
-    "morgan": "~1.9.1",
+    "morgan": "~1.9.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.13"
