@@ -20,4 +20,12 @@ app.set('view engine', 'ejs');
 app.use('/', indexRouter);
 app.use('/api/webinfo', webinfoRouter);
 
+if (typeof process.env.PORT === 'undefined') {
+    PORT = process.env.PORT;
+} else {
+    PORT = 3000;
+}
+
+app.listen(PORT)
+
 module.exports = app;

@@ -44,13 +44,17 @@
                 }
             }
 
-            function show_result(r) {
-                $('#result_area').prop('hidden', false)
+            function show_result(result) {
+                $('#result_area').prop('hidden', false);
+                $('#title_value').text(result.title);
+                $('#descr_value').text(result.description);
+                $('#internal_value').text(result.internal_res);
+                $('#external_value').text(result.total_res - result.internal_res);
+                $('#total_value').text(`${result.total_res - result.secured_res} vs ${result.secured_res}`);
             }
 
             function api_analyze_website(e) {
                 e.preventDefault();
-                console.log("Saljes...")
                 lock_form(true);
                 $.ajax(
                         {
@@ -61,7 +65,7 @@
                             success: function(data) {
                                 console.log(data);
                                 lock_form(false);
-                                show_result(null);
+                                show_result(data);
                             }
                         }
                 );
@@ -81,7 +85,7 @@
 
         <form>
             <label>Website URL: </label>
-            <input id="send_url_text" type="text" id="url_text"/>
+            <input id="send_url_text" type="text" id="url_text" value="neverssl.com">
             <br>
             <br>
             <button id="send_url_button" type="button">Analyse</button>
@@ -90,16 +94,38 @@
         <hr>
 
         <div id="result_area" hidden=true>
-        <p>Result:</p>
+            <h2>Result:</h2>
 
-        <table>
+            <table id="result_table">
 
-            <tr>
-                <th>Info</th>
-                <th>Value</th>
-            </tr>
+                <tr>
+                    <th>Info</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td id="title_value">Value</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td id="descr_value">Value</td>
+                </tr>
 
-        </table>
+                <tr>
+                    <td>Number of links and scripts pointing to internal resources</td>
+                    <td id="internal_value">Value</td>
+                </tr>
+                <tr>
+                    <td>Number of links and scripts pointing to external resources</td>
+                    <td id="external_value">Value</td>
+                </tr>
+                <tr>
+                    <td>Total number of links and scripts served through HTTP vs HTTPS protocol</td>
+                    <td id="total_value">Value</td>
+                </tr>
+
+
+            </table>
         </div>
     </body>
 </html>
