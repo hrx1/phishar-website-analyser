@@ -53,9 +53,14 @@
                 $('#total_value').text(`${result.total_res - result.secured_res} vs ${result.secured_res}`);
             }
 
+            function hide_result() {
+                $('#result_area').prop('hidden', true);
+            }
+
             function api_analyze_website(e) {
                 e.preventDefault();
                 lock_form(true);
+                hide_result();
                 $.ajax(
                         {
                             url: "api/webinfo",
@@ -66,6 +71,10 @@
                                 console.log(data);
                                 lock_form(false);
                                 show_result(data);
+                            },
+                            error: function(request, status, error) {
+                                alert("An error occured while fetching info. Please check if FQDN is valid.");
+                                lock_form(false);
                             }
                         }
                 );
@@ -84,7 +93,7 @@
         <h1>Website analyser</h1>
 
         <form>
-            <label>Website URL: </label>
+            <label>Website FQDN: </label>
             <input id="send_url_text" type="text" id="url_text" value="neverssl.com">
             <br>
             <br>
